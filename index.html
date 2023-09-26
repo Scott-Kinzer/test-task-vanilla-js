@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .block {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .is-hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+
+<script>
+
+const elements = [];
+const headerElements = [];
+
+for (let i = 0; i < 5; i++) {
+    elements.push({ index: i, text: `random text${i}`, isHidden: false});
+}
+
+function updateBlocks() {
+    
+    const body = document.getElementsByTagName('body')[0];
+
+    body.innerHTML = "";
+
+    headerElements.forEach((elem, i) => {
+        const block = document.createElement('div');
+        const text = document.createElement('p');
+        text.innerHTML = elem.text;
+
+        block.classList.add("block");
+
+        block.appendChild(text);
+        body.appendChild(block);
+
+        block.addEventListener('click', () => {
+
+            headerElements.splice(i, 1);
+            const el = elements.find((e) => elem.index === e.index);
+            el.isHidden = false;
+            
+            updateBlocks();
+        });
+    })
+
+    elements.forEach((elem) => {
+        const block = document.createElement('div');
+        const text = document.createElement('p');
+        text.innerHTML = elem.text;
+
+        block.classList.add("block");
+
+        if (elem.isHidden) {
+            block.classList.add("is-hide");
+        }
+
+        block.appendChild(text);
+        body.appendChild(block);
+
+        block.addEventListener('click', () => {
+            headerElements.unshift(elem);
+            elem.isHidden = true;
+
+            updateBlocks();
+        });
+    });
+};
+
+updateBlocks();
+</script>
+
+</body>
+</html>
